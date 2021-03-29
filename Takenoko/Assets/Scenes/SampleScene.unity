@@ -591,6 +591,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b86726698d5846847847e4c0c18fb366, type: 2}
   - {fileID: 11400000, guid: 5e91353867c143f46b86e42d8c6b9c47, type: 2}
   - {fileID: 11400000, guid: f570949cdbe5cee43a95ac972755bcce, type: 2}
+  bambooTileArray:
+  - {fileID: 11400000, guid: 94556a1c51e24ca4ab2e15028f8de4fb, type: 2}
+  - {fileID: 11400000, guid: ef441515d300fa1438c705a797d5845c, type: 2}
+  - {fileID: 11400000, guid: ffd7be4c2245d7946a67a92e052ef321, type: 2}
+  - {fileID: 11400000, guid: 793ef6cd939969e46b541e3896c3b45f, type: 2}
+  - {fileID: 11400000, guid: 4c4a68cd482d89b44925790b6133dcfd, type: 2}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
