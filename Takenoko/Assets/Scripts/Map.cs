@@ -12,7 +12,7 @@ public class Map : MonoBehaviour
 {
     public class BoardTile
     {
-        public BoardTile(int x,int y, Tile tile)
+        public BoardTile(int x, int y, Tile tile)
         {
             this.x = x;
             this.y = y;
@@ -28,7 +28,7 @@ public class Map : MonoBehaviour
     }
 
     public Canvas debugCanvas;
-    int currentAction = 1;
+   
 
     private Grid grid;
     [SerializeField] private Tilemap interactiveMap = null;
@@ -40,9 +40,12 @@ public class Map : MonoBehaviour
     [SerializeField] private Tile farmerTile = null;
     [SerializeField] private Tile hoverTile = null;
     [SerializeField] private Tile centerTile = null;
+
     public Button landButton;
     public Button farmerButton;
     public Button pandaButton;
+    public Button confirmActionButton;
+
     public Tile[] FlatTilesArray = new Tile[3];
     public Tile[] bambooTileArray = new Tile[5];
     BoardTile[,] board = new BoardTile[100, 100];
@@ -50,120 +53,80 @@ public class Map : MonoBehaviour
     private Vector3Int previousMousePos = new Vector3Int();
     private Vector3Int previousPandaPos = new Vector3Int(5, 5, 0);
     private Vector3Int previousFarmerPos = new Vector3Int(5, 5, 0);
+    private Vector3Int pond = new Vector3Int(5, 5, 0);
+    public enum State
+    {
 
+        WEATHER,
+        ACTION1,
+        ACTION2,
+        ACTION3
+
+    };
+    State currentState;
+
+    int currentAction = 1;
+    int actionNumber = 2;
+    bool WeatherOnce = true;
+    bool Action1Once = true;
+    bool Action2Once=true;
 
     // Start is called before the first frame update
     void Start()
     {
         grid = gameObject.GetComponent<Grid>();
-     
-    }
-
-   
-
-    void Update()
-    {
-        Tile SelectedTile;
-        Vector3Int mousePos = GetMousePosition();
-        Vector3Int pond = new Vector3Int(5, 5, 0);
         PlaceTile(pond, pathMap, centerTile);
         pandaMap.SetTile(previousPandaPos, pandaTile);
         farmerMap.SetTile(previousFarmerPos, farmerTile);
         board[pond.x, pond.y].isPond = true;
+        currentState = State.WEATHER;
+    }
 
-        if (currentAction == 1)
+
+
+    void Update()
+    {
+
+
+        //if(myturn) do function below
+        if (currentState == State.WEATHER)
         {
-            //Mouse over -> highlight tile
-            if (!mousePos.Equals(previousMousePos))
-            {
-                interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
-                interactiveMap.SetTile(mousePos, hoverTile);
-                previousMousePos = mousePos;
-            }
-
-            // Left mouse click -> add path tile
-            if (Input.GetMouseButtonDown(0))
-            {
-                int number = UnityEngine.Random.Range(0, 3);
-                SelectedTile = FlatTilesArray[number];
-                
-                if (neighbourCount(mousePos) >= 2 && board[mousePos.x,mousePos.y]==null)
-                {
-                    PlaceTile(mousePos, pathMap, SelectedTile);
-                    setColor(number, mousePos);
-                }
-
-            }
-
-            // Right mouse click -> remove path tile
-            if (Input.GetMouseButtonDown(1))
-            {
-                PlaceTile(mousePos, pathMap, null);
-            }
+            if (WeatherOnce == true)
+                WeatherSelection();
+        }
+        Vector3Int mousePos = GetMousePosition();
+        if (!mousePos.Equals(previousMousePos))
+        {
+            interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
+            interactiveMap.SetTile(mousePos, hoverTile);
+            previousMousePos = mousePos;
+        }
+        if (currentState == State.ACTION1)
+        {
+            if (Action1Once  == true)
+                performAction(currentAction);
+        }
+        if(currentState == State.ACTION2)
+        {
+            if (Action2Once == true)
+                performAction(currentAction);
         }
 
-        if (currentAction == 2)
-        {
-            //Mouse over -> highlight tile
-            if (!mousePos.Equals(previousMousePos))
-            {
-                interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
-                interactiveMap.SetTile(mousePos, farmerTile);
-                previousMousePos = mousePos;
-            }
+        debugCanvas.GetComponentInChildren<UnityEngine.UI.Button>().GetComponentInChildren<UnityEngine.UI.Text>().text = "CurrentState: " + currentState.ToString();
+    }
 
-            // Left mouse click -> add path tile
-            if (Input.GetMouseButtonDown(0))
-            {
-                if(board[mousePos.x, mousePos.y] != null && (isSameLine1(previousFarmerPos, mousePos) ||
-                    isSameLine2(previousFarmerPos, mousePos) ||
-                    isSameLine3(previousFarmerPos, mousePos) ||
-                    isSameLine4(previousFarmerPos, mousePos) ||
-                   previousFarmerPos.y == mousePos.y))
-                {
-                    farmerMap.SetTile(previousFarmerPos, null);
-                    farmerMap.SetTile(mousePos, farmerTile);
-                    previousFarmerPos = mousePos;
-                    if(mousePos!=pond)
-                    addBamboo(mousePos);
-                    GrowBambooNeighour(mousePos);
-                }
-
-            }
-        }
-
-        if (currentAction == 3)
-        {
-            //Mouse over -> highlight tile
-            if (!mousePos.Equals(previousMousePos))
-            {
-                interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
-                interactiveMap.SetTile(mousePos, pandaTile);
-                previousMousePos = mousePos;
-            }
-
-            // Left mouse click -> add path tile
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (board[mousePos.x, mousePos.y] != null && 
-                    (isSameLine1(previousPandaPos,mousePos) ||
-                    isSameLine2(previousPandaPos, mousePos) || 
-                    isSameLine3(previousPandaPos, mousePos) || 
-                    isSameLine4(previousPandaPos, mousePos) || 
-                    previousPandaPos.y==mousePos.y))
-                {
-                    pandaMap.SetTile(previousPandaPos, null);
-                    pandaMap.SetTile(mousePos, pandaTile);
-                    previousPandaPos = mousePos;
-                    if (mousePos != pond)
-                       removeBamboo(mousePos);
-                }
-            }
-        }
-        debugCanvas.GetComponentInChildren<UnityEngine.UI.Button>().GetComponentInChildren<UnityEngine.UI.Text>().text = "Mouse pos: " + mousePos.ToString();
+    private void WeatherSelection()
+    {
+        actionNumber = 2;
+        //int randomWeatherCondition= UnityEngine.Random.Range(0, 6);
+        int randomWeatherCondition = 0;
+        if (randomWeatherCondition == 0) //Sun
+            actionNumber += 1;
+        WeatherOnce = false;
     }
 
    
+
 
     Vector3Int GetMousePosition()
     {
@@ -171,12 +134,12 @@ public class Map : MonoBehaviour
 
         return grid.WorldToCell(mouseWorldPos);
     }
-    void PlaceTile(Vector3Int pos,Tilemap tilemap, Tile tile)
+    void PlaceTile(Vector3Int pos, Tilemap tilemap, Tile tile)
     {
-        
-            board[pos.x, pos.y] = new BoardTile(pos.x,pos.y,tile);
-            tilemap.SetTile(pos, tile);
-   
+
+        board[pos.x, pos.y] = new BoardTile(pos.x, pos.y, tile);
+        tilemap.SetTile(pos, tile);
+
     }
     int neighbourCount(Vector3Int pos)
     {
@@ -204,41 +167,44 @@ public class Map : MonoBehaviour
         }
         return count;
     }
-    int verifyNeigbour(int x, int y) { 
-    if (board[x, y] != null) {
-        if (board[x, y].isPond) {
-            return 2;
+    int verifyNeigbour(int x, int y)
+    {
+        if (board[x, y] != null)
+        {
+            if (board[x, y].isPond)
+            {
+                return 2;
+            }
+            return 1;
         }
-        return 1;
+        return 0;
     }
-    return 0;
-}
     void GrowBambooNeighour(Vector3Int pos)
     {
         if (pos.x > 0 && pos.y > 0)
         {
-            if (board[pos.x - 1, pos.y] != null && board[pos.x, pos.y].Color == board[pos.x - 1, pos.y].Color )
+            if (board[pos.x - 1, pos.y] != null && board[pos.x, pos.y].Color == board[pos.x - 1, pos.y].Color)
                 addBamboo(new Vector3Int(pos.x - 1, pos.y, 0));
-            if (board[pos.x + 1, pos.y] != null && board[pos.x, pos.y].Color == board[pos.x + 1, pos.y].Color )
+            if (board[pos.x + 1, pos.y] != null && board[pos.x, pos.y].Color == board[pos.x + 1, pos.y].Color)
                 addBamboo(new Vector3Int(pos.x + 1, pos.y, 0));
 
             if (pos.y % 2 == 0)
             {
-                if (board[pos.x - 1, pos.y + 1] != null && board[pos.x, pos.y].Color == board[pos.x - 1, pos.y+1].Color )
+                if (board[pos.x - 1, pos.y + 1] != null && board[pos.x, pos.y].Color == board[pos.x - 1, pos.y + 1].Color)
                 {
                     addBamboo(new Vector3Int(pos.x - 1, pos.y + 1, 0));
                 }
-                    
-                if (board[pos.x, pos.y - 1] != null && board[pos.x, pos.y].Color == board[pos.x , pos.y -1].Color )
+
+                if (board[pos.x, pos.y - 1] != null && board[pos.x, pos.y].Color == board[pos.x, pos.y - 1].Color)
                 {
                     addBamboo(new Vector3Int(pos.x, pos.y - 1, 0));
                 }
-                if (board[pos.x - 1, pos.y - 1] != null && board[pos.x, pos.y].Color == board[pos.x - 1, pos.y -1].Color )
-                    {
+                if (board[pos.x - 1, pos.y - 1] != null && board[pos.x, pos.y].Color == board[pos.x - 1, pos.y - 1].Color)
+                {
                     addBamboo(new Vector3Int(pos.x - 1, pos.y - 1, 0));
                 }
-                
-                if (board[pos.x, pos.y + 1] != null && board[pos.x, pos.y].Color == board[pos.x, pos.y +1].Color )
+
+                if (board[pos.x, pos.y + 1] != null && board[pos.x, pos.y].Color == board[pos.x, pos.y + 1].Color)
                 {
                     addBamboo(new Vector3Int(pos.x, pos.y + 1, 0));
 
@@ -249,30 +215,30 @@ public class Map : MonoBehaviour
 
             if (pos.y % 2 == 1)
             {
-                if (board[pos.x, pos.y - 1] != null && board[pos.x, pos.y].Color == board[pos.x , pos.y - 1].Color )
+                if (board[pos.x, pos.y - 1] != null && board[pos.x, pos.y].Color == board[pos.x, pos.y - 1].Color)
                 {
                     addBamboo(new Vector3Int(pos.x, pos.y - 1, 0));
                 }
-                
-                if (board[pos.x + 1, pos.y - 1] != null && board[pos.x, pos.y].Color == board[pos.x +1, pos.y - 1].Color )
+
+                if (board[pos.x + 1, pos.y - 1] != null && board[pos.x, pos.y].Color == board[pos.x + 1, pos.y - 1].Color)
                 {
                     addBamboo(new Vector3Int(pos.x + 1, pos.y - 1, 0));
                 }
-                
-                if (board[pos.x, pos.y + 1] != null && board[pos.x, pos.y].Color == board[pos.x , pos.y + 1].Color )
-                { 
+
+                if (board[pos.x, pos.y + 1] != null && board[pos.x, pos.y].Color == board[pos.x, pos.y + 1].Color)
+                {
                     addBamboo(new Vector3Int(pos.x, pos.y + 1, 0));
                 }
-                
-                if (board[pos.x + 1, pos.y + 1] != null && board[pos.x, pos.y].Color == board[pos.x + 1, pos.y + 1].Color )
+
+                if (board[pos.x + 1, pos.y + 1] != null && board[pos.x, pos.y].Color == board[pos.x + 1, pos.y + 1].Color)
                 {
                     addBamboo(new Vector3Int(pos.x + 1, pos.y + 1, 0));
                 }
-                
+
             }
         }
     }
-   public void changeActionToLand()
+    public void changeActionToLand()
     {
         currentAction = 1;
     }
@@ -283,6 +249,36 @@ public class Map : MonoBehaviour
     public void changeActionToPanda()
     {
         currentAction = 3;
+    }
+    public void changeState()
+    {
+        if (currentState == State.WEATHER)
+            currentState = State.ACTION1;
+        else if (currentState == State.ACTION1)
+            currentState = State.ACTION2;
+        else
+        {
+            if (actionNumber == 3)
+            {
+                if (currentState == State.ACTION2)
+                    currentState = State.ACTION3;
+                else if (currentState == State.ACTION3)
+                {
+                    currentState = State.WEATHER;
+                    WeatherOnce = true;
+                }
+            }
+            else
+            {
+                if (currentState == State.ACTION2)
+                {
+                    currentState = State.WEATHER;
+                    WeatherOnce = true;
+                }
+            }
+        }
+
+
     }
     bool isSameLine1(Vector3Int pos1, Vector3Int pos2)
     {
@@ -308,7 +304,7 @@ public class Map : MonoBehaviour
             }
         }
 
-            return false;
+        return false;
     }
     bool isSameLine2(Vector3Int pos1, Vector3Int pos2)
     {
@@ -411,9 +407,9 @@ public class Map : MonoBehaviour
             board[pos.x, pos.y].bambooCount = 0;
             count = 0;
         }
-        bambooMap.SetTile(pos, bambooTileArray[count ]);
+        bambooMap.SetTile(pos, bambooTileArray[count]);
     }
-    void setColor(int number,Vector3Int pos)
+    void setColor(int number, Vector3Int pos)
     {
         if (number == 0)
             board[pos.x, pos.y].Color = "Yellow";
@@ -422,5 +418,96 @@ public class Map : MonoBehaviour
         if (number == 2)
             board[pos.x, pos.y].Color = "Red";
     }
- 
+    void performAction(int currentAction)
+    {
+        Tile SelectedTile;
+        Vector3Int mousePos = GetMousePosition();
+
+        if (currentAction == 1)
+        {
+           
+            // Left mouse click -> add path tile
+            if (Input.GetMouseButtonDown(0))
+            {
+                int number = UnityEngine.Random.Range(0, 3);
+                SelectedTile = FlatTilesArray[number];
+
+                if (neighbourCount(mousePos) >= 2 && board[mousePos.x, mousePos.y] == null)
+                {
+                    PlaceTile(mousePos, pathMap, SelectedTile);
+                    setColor(number, mousePos);
+                    Action1Once = false;
+                }
+            }
+            //Mouse over -> highlight tile
+           
+        }
+
+        if (currentAction == 2)
+        {
+            //Mouse over -> highlight tile
+            if (!mousePos.Equals(previousMousePos))
+            {
+                interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
+                interactiveMap.SetTile(mousePos, farmerTile);
+                previousMousePos = mousePos;
+            }
+
+            // Left mouse click -> add path tile
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (board[mousePos.x, mousePos.y] != null && (isSameLine1(previousFarmerPos, mousePos) ||
+                    isSameLine2(previousFarmerPos, mousePos) ||
+                    isSameLine3(previousFarmerPos, mousePos) ||
+                    isSameLine4(previousFarmerPos, mousePos) ||
+                   previousFarmerPos.y == mousePos.y))
+                {
+                    farmerMap.SetTile(previousFarmerPos, null);
+                    farmerMap.SetTile(mousePos, farmerTile);
+                    previousFarmerPos = mousePos;
+                    if (mousePos != pond)
+                    {
+                        addBamboo(mousePos);
+                        GrowBambooNeighour(mousePos);
+                        //Action1Once = false;
+                    }
+                }
+
+            }
+        }
+
+        if (currentAction == 3)
+        {
+            //Mouse over -> highlight tile
+            if (!mousePos.Equals(previousMousePos))
+            {
+                interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
+                interactiveMap.SetTile(mousePos, pandaTile);
+                previousMousePos = mousePos;
+            }
+
+            // Left mouse click -> add path tile
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (board[mousePos.x, mousePos.y] != null &&
+                    (isSameLine1(previousPandaPos, mousePos) ||
+                    isSameLine2(previousPandaPos, mousePos) ||
+                    isSameLine3(previousPandaPos, mousePos) ||
+                    isSameLine4(previousPandaPos, mousePos) ||
+                    previousPandaPos.y == mousePos.y))
+                {
+                    pandaMap.SetTile(previousPandaPos, null);
+                    pandaMap.SetTile(mousePos, pandaTile);
+                    previousPandaPos = mousePos;
+                    if (mousePos != pond)
+                    {
+                        removeBamboo(mousePos);
+                       // Action1Once = false;
+                    }
+                    
+                }
+            }
+        }
+    }
+
 }
