@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -28,7 +29,7 @@ public class Map : MonoBehaviour
     }
 
     public Canvas debugCanvas;
-   
+
 
     private Grid grid;
     [SerializeField] private Tilemap interactiveMap = null;
@@ -45,6 +46,7 @@ public class Map : MonoBehaviour
     public Button farmerButton;
     public Button pandaButton;
     public Button confirmActionButton;
+    public Button eventText;
 
     public Tile[] FlatTilesArray = new Tile[3];
     public Tile[] bambooTileArray = new Tile[5];
@@ -58,6 +60,7 @@ public class Map : MonoBehaviour
     {
 
         WEATHER,
+        WEATHER2,
         ACTION1,
         ACTION2,
         ACTION3
@@ -65,11 +68,17 @@ public class Map : MonoBehaviour
     };
     State currentState;
 
-    int currentAction = 1;
+    int currentAction = 0;
     int actionNumber = 2;
     bool WeatherOnce = true;
+    bool Weather2Once = true;
     bool Action1Once = true;
-    bool Action2Once=true;
+    bool Action2Once = true;
+    bool Action3Once = true;
+    bool sameAction = false;
+    int FirstAction = 4;
+    int randomWeatherCondition;
+    int turnNumber=0;
 
     // Start is called before the first frame update
     void Start()
@@ -79,7 +88,7 @@ public class Map : MonoBehaviour
         pandaMap.SetTile(previousPandaPos, pandaTile);
         farmerMap.SetTile(previousFarmerPos, farmerTile);
         board[pond.x, pond.y].isPond = true;
-        currentState = State.WEATHER;
+        currentState = State.ACTION1;
     }
 
 
@@ -91,25 +100,52 @@ public class Map : MonoBehaviour
         //if(myturn) do function below
         if (currentState == State.WEATHER)
         {
+            
+            Action2Once = true;
+            Action3Once = true;
+            FirstAction = 4;
             if (WeatherOnce == true)
                 WeatherSelection();
         }
-        Vector3Int mousePos = GetMousePosition();
-        if (!mousePos.Equals(previousMousePos))
+       
+        if(currentState==State.WEATHER2)
         {
-            interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
-            interactiveMap.SetTile(mousePos, hoverTile);
-            previousMousePos = mousePos;
+            WeatherOnce = true;
+            if (Weather2Once == true)
+                doWeatherCondition();
         }
+
         if (currentState == State.ACTION1)
         {
-            if (Action1Once  == true)
+            
+            Weather2Once = true;
+            WeatherOnce = true;
+            makeHoverTiles();
+            if (Action1Once == true)
+            {
                 performAction(currentAction);
+            }
+            else
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press confirm to end this action!";
         }
-        if(currentState == State.ACTION2)
+        if (currentState == State.ACTION2)
         {
+       
+            Action1Once = true;
+            makeHoverTiles();
             if (Action2Once == true)
                 performAction(currentAction);
+            else
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press confirm to end this action!";
+        }
+        if (currentState == State.ACTION3)
+        {
+            Action2Once = true;
+            makeHoverTiles();
+            if (Action3Once == true)
+                performAction(currentAction);
+            else
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press confirm to end this action!";
         }
 
         debugCanvas.GetComponentInChildren<UnityEngine.UI.Button>().GetComponentInChildren<UnityEngine.UI.Text>().text = "CurrentState: " + currentState.ToString();
@@ -118,15 +154,108 @@ public class Map : MonoBehaviour
     private void WeatherSelection()
     {
         actionNumber = 2;
-        //int randomWeatherCondition= UnityEngine.Random.Range(0, 6);
-        int randomWeatherCondition = 0;
-        if (randomWeatherCondition == 0) //Sun
-            actionNumber += 1;
+       // randomWeatherCondition= UnityEngine.Random.Range(0, 6);
+        randomWeatherCondition = 0;
+        switch (randomWeatherCondition)
+        {
+            case 0://Sun
+
+                actionNumber += 1;
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Rolled the Sun dice,you have an extra action! Press confrim";
+                
+                //eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press the confirm button to validate the roll!";
+                break;
+            case 1://Rain
+              
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Rolled the Rain dice,you can place a bamboo on a tile!";
+                break;
+            case 2://Wind
+                sameAction = true;
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Rolled the Wind dice,you can do same action twice! Press confirm";
+                Thread.Sleep(5000);
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press the confirm button to validate the roll!";
+                break;
+            case 3://Storm
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Rolled the Storm dice,you can take a bamboo from any tile!";
+                break;
+            case 4://Clouds
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Rolled the Cloud dice,you can take any tile improvement!";
+                break;
+            case 5://Random
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Rolled the ? dice,you can decide which condition to take!";
+                break;
+        }
+ 
+        WeatherOnce = false;
+    }
+    private void degeaba()
+    {
+        Debug.Log("degeaba");
+    }
+
+    private void doWeatherCondition()
+    {
+        switch (randomWeatherCondition)
+        {
+            case 0://Sun
+                break;
+            case 1://Rain
+                doRainCondition();
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Select the tile you want to grow a bamboo on!";
+                break;
+            case 2://Wind
+                break;
+            case 3://Storm
+                doStormCondition();
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Select the tile you want to take a bamboo from!";
+                break;
+            case 4://Clouds
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "To be implemented";
+                break;
+            case 5://Random
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "To be implemented";
+                break;
+        }
+
         WeatherOnce = false;
     }
 
-   
+    private void doRainCondition()
+    {
+        Vector3Int mousePos = GetMousePosition();
+        if (!mousePos.Equals(previousMousePos))
+        {
+            interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
+            interactiveMap.SetTile(mousePos, farmerTile);
+            previousMousePos = mousePos;
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            addBamboo(mousePos);
+            Weather2Once = false;
+            interactiveMap.SetTile(mousePos, null);
+            eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press the confirm button to validate the roll!";
 
+        }
+    }
+    private void doStormCondition()
+    {
+        Vector3Int mousePos = GetMousePosition();
+        if (!mousePos.Equals(previousMousePos))
+        {
+            interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
+            interactiveMap.SetTile(mousePos, pandaTile);
+            previousMousePos = mousePos;
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            removeBamboo(mousePos);
+            Weather2Once = false;
+            interactiveMap.SetTile(mousePos, null);
+            eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press the confirm button to validate the roll!";
+
+        }
+    }
 
     Vector3Int GetMousePosition()
     {
@@ -253,19 +382,36 @@ public class Map : MonoBehaviour
     public void changeState()
     {
         if (currentState == State.WEATHER)
+        {
+            if (randomWeatherCondition == 0 || randomWeatherCondition == 2)
+                currentState = State.ACTION1;
+            else
+                currentState = State.WEATHER2;
+        }
+        else if (currentState == State.WEATHER2)
             currentState = State.ACTION1;
         else if (currentState == State.ACTION1)
+        {
             currentState = State.ACTION2;
+            currentAction = 0;
+        }
+
         else
         {
             if (actionNumber == 3)
             {
                 if (currentState == State.ACTION2)
+                {
                     currentState = State.ACTION3;
+                    currentAction = 0;
+                }
                 else if (currentState == State.ACTION3)
                 {
                     currentState = State.WEATHER;
                     WeatherOnce = true;
+                    currentAction = 0;
+                    turnNumber = turnNumber + 1;
+
                 }
             }
             else
@@ -274,6 +420,8 @@ public class Map : MonoBehaviour
                 {
                     currentState = State.WEATHER;
                     WeatherOnce = true;
+                    currentAction = 0;
+                    turnNumber = turnNumber + 1;
                 }
             }
         }
@@ -422,37 +570,60 @@ public class Map : MonoBehaviour
     {
         Tile SelectedTile;
         Vector3Int mousePos = GetMousePosition();
-
+        if (currentAction == 0)
+        {
+            switch (currentState)
+            {
+                case State.ACTION1:
+                    eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Select your first action!";
+                    break;
+                case State.ACTION2:
+                    eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Select your second action!";
+                    break;
+                case State.ACTION3:
+                    eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Select your third action!";
+                    break;
+            }
+            
+        }
         if (currentAction == 1)
         {
-           
+            eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "You may place a land tile!";
             // Left mouse click -> add path tile
             if (Input.GetMouseButtonDown(0))
             {
                 int number = UnityEngine.Random.Range(0, 3);
                 SelectedTile = FlatTilesArray[number];
 
-                if (neighbourCount(mousePos) >= 2 && board[mousePos.x, mousePos.y] == null)
+                if (neighbourCount(mousePos) >= 2 && board[mousePos.x, mousePos.y] == null && (FirstAction!=1 || sameAction==true))
                 {
                     PlaceTile(mousePos, pathMap, SelectedTile);
                     setColor(number, mousePos);
-                    Action1Once = false;
+                    switch (currentState)
+                    {
+                        case State.ACTION1:
+                        Action1Once = false;
+                        FirstAction = 1;
+                            break;
+                        case State.ACTION2:
+                            Action2Once = false;
+                            break;
+                        case State.ACTION3:
+                            Action3Once = false;
+                            break;
+                        default:
+                            break;
+                    }
+                    currentAction = 0;
                 }
             }
             //Mouse over -> highlight tile
-           
+
         }
 
         if (currentAction == 2)
         {
-            //Mouse over -> highlight tile
-            if (!mousePos.Equals(previousMousePos))
-            {
-                interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
-                interactiveMap.SetTile(mousePos, farmerTile);
-                previousMousePos = mousePos;
-            }
-
+            eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "You may move the farmer to grow bamboo!";       
             // Left mouse click -> add path tile
             if (Input.GetMouseButtonDown(0))
             {
@@ -460,7 +631,8 @@ public class Map : MonoBehaviour
                     isSameLine2(previousFarmerPos, mousePos) ||
                     isSameLine3(previousFarmerPos, mousePos) ||
                     isSameLine4(previousFarmerPos, mousePos) ||
-                   previousFarmerPos.y == mousePos.y))
+                   previousFarmerPos.y == mousePos.y) &&
+                  (FirstAction != 2 || sameAction == true))
                 {
                     farmerMap.SetTile(previousFarmerPos, null);
                     farmerMap.SetTile(mousePos, farmerTile);
@@ -469,7 +641,22 @@ public class Map : MonoBehaviour
                     {
                         addBamboo(mousePos);
                         GrowBambooNeighour(mousePos);
-                        //Action1Once = false;
+                        switch (currentState)
+                        {
+                            case State.ACTION1:
+                                Action1Once = false;
+                                FirstAction = 2;
+                                break;
+                            case State.ACTION2:
+                                Action2Once = false;
+                                break;
+                            case State.ACTION3:
+                                Action3Once = false;
+                                break;
+                            default:
+                                break;
+                        }
+                        currentAction = 0;
                     }
                 }
 
@@ -478,13 +665,7 @@ public class Map : MonoBehaviour
 
         if (currentAction == 3)
         {
-            //Mouse over -> highlight tile
-            if (!mousePos.Equals(previousMousePos))
-            {
-                interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
-                interactiveMap.SetTile(mousePos, pandaTile);
-                previousMousePos = mousePos;
-            }
+            eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "You may move the panda to eat bamboo!";
 
             // Left mouse click -> add path tile
             if (Input.GetMouseButtonDown(0))
@@ -494,7 +675,8 @@ public class Map : MonoBehaviour
                     isSameLine2(previousPandaPos, mousePos) ||
                     isSameLine3(previousPandaPos, mousePos) ||
                     isSameLine4(previousPandaPos, mousePos) ||
-                    previousPandaPos.y == mousePos.y))
+                    previousPandaPos.y == mousePos.y) &&
+                    (FirstAction != 3 || sameAction == true))
                 {
                     pandaMap.SetTile(previousPandaPos, null);
                     pandaMap.SetTile(mousePos, pandaTile);
@@ -502,12 +684,54 @@ public class Map : MonoBehaviour
                     if (mousePos != pond)
                     {
                         removeBamboo(mousePos);
-                       // Action1Once = false;
+                        switch (currentState)
+                        {
+                            case State.ACTION1:
+                                Action1Once = false;
+                                FirstAction = 3;
+                                break;
+                            case State.ACTION2:
+                                Action2Once = false;
+                                break;
+                            case State.ACTION3:
+                                Action3Once = false;
+                                break;
+                            default:
+                                break;
+                        }
+                        currentAction = 0;
                     }
-                    
+
                 }
             }
         }
     }
+    void makeHoverTiles()
+    {
+        Vector3Int mousePos = GetMousePosition();
+        if (!mousePos.Equals(previousMousePos))
+        {
+            switch (currentAction)
+            {
+                case 1:
+                    interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
+                    interactiveMap.SetTile(mousePos, hoverTile);
+                    previousMousePos = mousePos;
+                    break;
+                case 2:
+                    interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
+                    interactiveMap.SetTile(mousePos, farmerTile);
+                    previousMousePos = mousePos;
+                    break;
+                case 3:
+                    interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
+                    interactiveMap.SetTile(mousePos, pandaTile);
+                    previousMousePos = mousePos;
+                    break;
+            }
 
-}
+        }
+      
+    }
+    
+}   
