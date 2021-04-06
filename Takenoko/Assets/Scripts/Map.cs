@@ -28,6 +28,25 @@ public class Map : MonoBehaviour
         public string Color;
     }
 
+    public class Player
+    {
+        public string playerName;
+        public int score;
+        public Dictionary<string, int> PlayerBamboo =new Dictionary<string, int>();
+        public Player()
+        {
+            PlayerBamboo.Add("Yellow", 0);//Yellow
+            PlayerBamboo.Add("Red", 0);//Red
+            PlayerBamboo.Add("Green", 0);//Green
+
+        }
+        public Player(string playerName):this()
+        {
+            this.playerName = playerName;
+            
+        }
+    }
+
     public Canvas debugCanvas;
 
 
@@ -47,10 +66,14 @@ public class Map : MonoBehaviour
     public Button pandaButton;
     public Button confirmActionButton;
     public Button eventText;
+    public GameObject ScoreBox;
+    public GameObject[] tileButtons = new GameObject[3];
+    GameObject[] ScoreBoxList = new GameObject[4];
 
     public Tile[] FlatTilesArray = new Tile[3];
     public Tile[] bambooTileArray = new Tile[5];
     BoardTile[,] board = new BoardTile[100, 100];
+    Player[] Players = new Player[2];
 
     private Vector3Int previousMousePos = new Vector3Int();
     private Vector3Int previousPandaPos = new Vector3Int(5, 5, 0);
@@ -76,9 +99,16 @@ public class Map : MonoBehaviour
     bool Action2Once = true;
     bool Action3Once = true;
     bool sameAction = false;
+    bool selected=false;
     int FirstAction = 4;
     int randomWeatherCondition;
     int turnNumber=0;
+    int selectedButton = 3;
+    int selectedNumber = 3;
+    Tile TileToBePlaced;
+    Tile[] SelectedTile = new Tile[10];
+    int[] number = new int[10];
+    int playerCount = 4;
 
     // Start is called before the first frame update
     void Start()
@@ -89,8 +119,14 @@ public class Map : MonoBehaviour
         farmerMap.SetTile(previousFarmerPos, farmerTile);
         board[pond.x, pond.y].isPond = true;
         currentState = State.ACTION1;
+        tileButtons[0].SetActive(false);
+        tileButtons[1].SetActive(false);
+        tileButtons[2].SetActive(false);
+        Players[0] = new Player("Player1");
+        Players[1] = new Player("Player2");
+        instantiateScoreBoxes();
+       
     }
-
 
 
     void Update()
@@ -120,42 +156,70 @@ public class Map : MonoBehaviour
             
             Weather2Once = true;
             WeatherOnce = true;
-            makeHoverTiles();
-            if (Action1Once == true)
+
+            
+            if (Action1Once == true && selected==true)
             {
+                makeHoverTiles();
                 performAction(currentAction);
             }
             else
+            {
                 eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press confirm to end this action!";
+                interactiveMap.SetTile(GetMousePosition(), null);
+
+            }
         }
         if (currentState == State.ACTION2)
         {
        
             Action1Once = true;
-            makeHoverTiles();
+            
             if (Action2Once == true)
+            {
                 performAction(currentAction);
+                makeHoverTiles();
+            }
             else
+            {
                 eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press confirm to end this action!";
+                interactiveMap.SetTile(GetMousePosition(), null);
+
+            }
         }
         if (currentState == State.ACTION3)
         {
             Action2Once = true;
-            makeHoverTiles();
+           
             if (Action3Once == true)
+            {
                 performAction(currentAction);
+                makeHoverTiles();
+            }
             else
+            {
                 eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press confirm to end this action!";
-        }
+                interactiveMap.SetTile(GetMousePosition(), null);
 
-        debugCanvas.GetComponentInChildren<UnityEngine.UI.Button>().GetComponentInChildren<UnityEngine.UI.Text>().text = "CurrentState: " + currentState.ToString();
+            }
+        }
+        for(int k=0;k<playerCount;k++)
+        {
+            ScoreBoxList[k].transform.Find("PlayerName").GetComponentInChildren<UnityEngine.UI.Text>().text = Players[k].playerName;
+            ScoreBoxList[k].transform.Find("ScoreText").GetComponentInChildren<UnityEngine.UI.Text>().text = "Score : " + Players[k].score.ToString();
+            ScoreBoxList[k].transform.Find("RedBambooText").GetComponentInChildren<UnityEngine.UI.Text>().text = "Red bamboo : " + Players[k].PlayerBamboo["Red"].ToString();
+            ScoreBoxList[k].transform.Find("YellowBambooText").GetComponentInChildren<UnityEngine.UI.Text>().text = "Yellow bamboo : " + Players[k].PlayerBamboo["Yellow"].ToString();
+            ScoreBoxList[k].transform.Find("GreenBambooText").GetComponentInChildren<UnityEngine.UI.Text>().text = "Green bamboo : " + Players[k].PlayerBamboo["Green"].ToString();
+        }
+        
+
+        debugCanvas.GetComponentInChildren<UnityEngine.UI.Button>().GetComponentInChildren<UnityEngine.UI.Text>().text = "PlayerName : "+Players[turnNumber%playerCount].playerName +" CurrentState: " + currentState.ToString();
     }
 
     private void WeatherSelection()
     {
         actionNumber = 2;
-       // randomWeatherCondition= UnityEngine.Random.Range(0, 6);
-        randomWeatherCondition = 0;
+        randomWeatherCondition= UnityEngine.Random.Range(0, 6);
         switch (randomWeatherCondition)
         {
             case 0://Sun
@@ -187,10 +251,6 @@ public class Map : MonoBehaviour
         }
  
         WeatherOnce = false;
-    }
-    private void degeaba()
-    {
-        Debug.Log("degeaba");
     }
 
     private void doWeatherCondition()
@@ -369,7 +429,13 @@ public class Map : MonoBehaviour
     }
     public void changeActionToLand()
     {
+        selected = false;
         currentAction = 1;
+        selectedButton = 3;
+        if(FirstAction!=1)
+        TileSelection();
+        
+ 
     }
     public void changeActionToFarmer()
     {
@@ -556,6 +622,7 @@ public class Map : MonoBehaviour
             count = 0;
         }
         bambooMap.SetTile(pos, bambooTileArray[count]);
+        Players[turnNumber % playerCount].PlayerBamboo[board[pos.x, pos.y].Color] += 1;
     }
     void setColor(int number, Vector3Int pos)
     {
@@ -568,7 +635,7 @@ public class Map : MonoBehaviour
     }
     void performAction(int currentAction)
     {
-        Tile SelectedTile;
+        
         Vector3Int mousePos = GetMousePosition();
         if (currentAction == 0)
         {
@@ -592,13 +659,13 @@ public class Map : MonoBehaviour
             // Left mouse click -> add path tile
             if (Input.GetMouseButtonDown(0))
             {
-                int number = UnityEngine.Random.Range(0, 3);
-                SelectedTile = FlatTilesArray[number];
+                
 
-                if (neighbourCount(mousePos) >= 2 && board[mousePos.x, mousePos.y] == null && (FirstAction!=1 || sameAction==true))
+                if (neighbourCount(mousePos) >= 2 && board[mousePos.x, mousePos.y] == null && (FirstAction!=1 || sameAction==true) && selectedNumber != 3)
                 {
-                    PlaceTile(mousePos, pathMap, SelectedTile);
-                    setColor(number, mousePos);
+                    
+                    PlaceTile(mousePos, pathMap, TileToBePlaced);
+                    setColor(selectedNumber, mousePos);
                     switch (currentState)
                     {
                         case State.ACTION1:
@@ -706,6 +773,55 @@ public class Map : MonoBehaviour
             }
         }
     }
+    void TileSelection()
+    {
+        
+        for (int i=0;i<3;i++)
+        {
+             number[i]= UnityEngine.Random.Range(0, 3);
+            SelectedTile[i] = FlatTilesArray[number[i]];
+        }
+
+
+        
+        tileButtons[0].SetActive(true);
+        tileButtons[1].SetActive(true);
+        tileButtons[2].SetActive(true);
+        tileButtons[0].GetComponent<Image>().sprite = SelectedTile[0].sprite;
+        tileButtons[1].GetComponent<Image>().sprite = SelectedTile[1].sprite;
+        tileButtons[2].GetComponent<Image>().sprite = SelectedTile[2].sprite;
+        
+    }
+    public void SelectTile1()
+    {
+        selectedButton=0;
+       tileButtons[0].SetActive(false);
+       tileButtons[1].SetActive(false);
+       tileButtons[2].SetActive(false);
+        (TileToBePlaced, selectedNumber) = (SelectedTile[selectedButton], number[selectedButton]);
+        selected = true;
+    }
+    
+    public void SelectTile2()
+    {
+        selectedButton = 1;
+        tileButtons[0].SetActive(false);
+        tileButtons[1].SetActive(false);
+        tileButtons[2].SetActive(false);
+        (TileToBePlaced, selectedNumber) = (SelectedTile[selectedButton], number[selectedButton]);
+        selected = true;
+    }
+
+    public void SelectTile3()
+    {
+        selectedButton = 2;
+    tileButtons[0].SetActive(false);
+    tileButtons[1].SetActive(false);
+    tileButtons[2].SetActive(false);
+    (TileToBePlaced, selectedNumber) = (SelectedTile[selectedButton], number[selectedButton]);
+        selected = true;
+    }
+
     void makeHoverTiles()
     {
         Vector3Int mousePos = GetMousePosition();
@@ -733,5 +849,14 @@ public class Map : MonoBehaviour
         }
       
     }
-    
+
+    public void instantiateScoreBoxes()
+    {
+        int j = 400;
+        for (int k = 0; k < playerCount; k++)
+        {
+            ScoreBoxList[k] = Instantiate(ScoreBox, new Vector3(570, j, 0), Quaternion.identity, debugCanvas.transform);
+            j -= 400 / playerCount;
+        }
+    }
 }   
