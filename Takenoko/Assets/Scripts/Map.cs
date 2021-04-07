@@ -26,6 +26,8 @@ public class Map : MonoBehaviour
         public bool isPond = false;
         public int bambooCount;
         public string Color;
+        public bool hasNoGrowth = false;
+        public bool hasDoubleGrowth = false;
     }
 
     public class Player
@@ -68,10 +70,12 @@ public class Map : MonoBehaviour
     public Button eventText;
     public GameObject ScoreBox;
     public GameObject[] tileButtons = new GameObject[3];
+    public GameObject[] diceButtons = new GameObject[5];
     GameObject[] ScoreBoxList = new GameObject[4];
 
     public Tile[] FlatTilesArray = new Tile[3];
     public Tile[] bambooTileArray = new Tile[5];
+    public Tile[] diceSprites = new Tile[5];
     BoardTile[,] board = new BoardTile[100, 100];
     Player[] Players = new Player[2];
 
@@ -108,7 +112,8 @@ public class Map : MonoBehaviour
     Tile TileToBePlaced;
     Tile[] SelectedTile = new Tile[10];
     int[] number = new int[10];
-    int playerCount = 4;
+    int playerCount = 2;
+    bool selectedDice = false;
 
     // Start is called before the first frame update
     void Start()
@@ -119,9 +124,10 @@ public class Map : MonoBehaviour
         farmerMap.SetTile(previousFarmerPos, farmerTile);
         board[pond.x, pond.y].isPond = true;
         currentState = State.ACTION1;
-        tileButtons[0].SetActive(false);
-        tileButtons[1].SetActive(false);
-        tileButtons[2].SetActive(false);
+        for (int i = 0; i < 3; i++)
+            tileButtons[i].SetActive(false);
+        for(int i=0;i<5;i++)
+            diceButtons[i].SetActive(false);
         Players[0] = new Player("Player1");
         Players[1] = new Player("Player2");
         instantiateScoreBoxes();
@@ -247,10 +253,24 @@ public class Map : MonoBehaviour
                 break;
             case 5://Random
                 eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Rolled the ? dice,you can decide which condition to take!";
+               // while (selectedDice != true)
+                   // SelectDice();
                 break;
         }
  
         WeatherOnce = false;
+    }
+
+     void SelectDice()
+    {
+
+        for(int i=0;i<5;i++)
+        {
+            diceButtons[i].SetActive(true);
+            diceButtons[i].GetComponent<Image>().sprite =diceSprites[i].sprite;
+
+        }
+       
     }
 
     private void doWeatherCondition()
@@ -779,7 +799,20 @@ public class Map : MonoBehaviour
         for (int i=0;i<3;i++)
         {
              number[i]= UnityEngine.Random.Range(0, 3);
+            int improvement = UnityEngine.Random.Range(0, 3);
             SelectedTile[i] = FlatTilesArray[number[i]];
+            //switch (improvement)
+            //{ 
+            //    case 0:
+            //    break;
+            //    case 1:
+            //    SelectedTile[i].hasNoGrowth = true;
+            //    break;
+            //    case 2:
+            //        SelectedTile[i].hasDoubleGrowth = true;
+            //    default:
+            //    break;
+            //}
         }
 
 
