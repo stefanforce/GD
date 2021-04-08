@@ -131,6 +131,7 @@ public class Map : MonoBehaviour
         Players[0] = new Player("Player1");
         Players[1] = new Player("Player2");
         instantiateScoreBoxes();
+
        
     }
 
@@ -242,7 +243,7 @@ public class Map : MonoBehaviour
             case 2://Wind
                 sameAction = true;
                 eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Rolled the Wind dice,you can do same action twice! Press confirm";
-                Thread.Sleep(5000);
+                //Thread.Sleep(5000);
                 eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press the confirm button to validate the roll!";
                 break;
             case 3://Storm
@@ -885,11 +886,11 @@ public class Map : MonoBehaviour
 
     public void instantiateScoreBoxes()
     {
-        int j = 400;
+        int j = 740;
         for (int k = 0; k < playerCount; k++)
         {
-            ScoreBoxList[k] = Instantiate(ScoreBox, new Vector3(570, j, 0), Quaternion.identity, debugCanvas.transform);
-            j -= 400 / playerCount;
+            ScoreBoxList[k] = Instantiate(ScoreBox, new Vector3(1660, j, 0), Quaternion.identity, debugCanvas.transform);
+            j -= 690 / playerCount;
         }
     }
 }   
