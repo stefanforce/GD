@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: plots_12
+  m_Name: plots_14
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -8791828403336329647, guid: e29075498b32bd442b243912c4d62e2f,
+  m_Sprite: {fileID: -1997283940876630804, guid: e29075498b32bd442b243912c4d62e2f,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
