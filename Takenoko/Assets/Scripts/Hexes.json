@@ -1,0 +1,119 @@
+[{
+    "name": "plots_1",
+    "Color":"Green",
+    "hasNoEating" : true,
+    "hasDoubleGrowth" : false
+},
+{
+    "name": "plots_2",
+    "Color":"Green",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_3",
+    "Color":"Green",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_4",
+    "Color":"Green",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_5",
+    "Color":"Green",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_6",
+    "Color":"Green",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_7",
+    "Color":"Green",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : true
+},{
+    "name": "plots_8",
+    "Color":"Green",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : true
+},{
+    "name": "plots_9",
+    "Color":"Green",
+    "hasNoEating" : true,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_10",
+    "Color":"Yellow",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_11",
+    "Color":"Yellow",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_12",
+    "Color":"Yellow",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_13",
+    "Color":"Yellow",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : true
+},{
+    "name": "plots_14",
+    "Color":"Yellow",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_15",
+    "Color":"Yellow",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_16",
+    "Color":"Yellow",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_17",
+    "Color":"Yellow",
+    "hasNoEating" : true,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_18",
+    "Color":"Red",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_19",
+    "Color":"Red",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_20",
+    "Color":"Red",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : true
+},{
+    "name": "plots_21",
+    "Color":"Red",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},{
+    "name": "plots_22",
+    "Color":"Red",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},
+{
+    "name": "plots_23",
+    "Color":"Red",
+    "hasNoEating" : true,
+    "hasDoubleGrowth" : false
+}
+]

@@ -1,0 +1,44 @@
+[
+{"name": "objectiveB_20",
+    "bambooCount":4,
+    "Color":"Green",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},
+{"name": "objectiveB_21",
+    "bambooCount":4,
+    "Color":"Yellow",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},
+{"name": "objectiveB_22",
+    "bambooCount":4,
+    "Color":"Red",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : false
+},
+{"name": "objectiveB_23",
+    "bambooCount":4,
+    "Color":"Green",
+    "hasNoEating" : true,
+    "hasDoubleGrowth" : false
+},
+{"name": "objectiveB_24",
+    "bambooCount":4,
+    "Color":"Yellow",
+    "hasNoEating" : true,
+    "hasDoubleGrowth" : false
+},
+{"name": "objectiveB_25",
+    "bambooCount":4,
+    "Color":"Red",
+    "hasNoEating" : true,
+    "hasDoubleGrowth" : false
+},
+{"name": "objectiveB_26",
+    "bambooCount":4,
+    "Color":"Red",
+    "hasNoEating" : false,
+    "hasDoubleGrowth" : true
+}
+]
