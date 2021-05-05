@@ -15,6 +15,8 @@ namespace nume
     {
 
         public string name;
+        public int type;
+        public int score;
     }
     [Serializable]
     public class JsonTiles
@@ -294,6 +296,7 @@ namespace nume
                 if (WeatherOnce == true)
                     WeatherSelection();
                 showQuests();
+                updateScores();
             }
 
             if (currentState == State.WEATHER2)
@@ -367,9 +370,77 @@ namespace nume
 
             debugCanvas.GetComponentInChildren<UnityEngine.UI.Button>().GetComponentInChildren<UnityEngine.UI.Text>().text = "PlayerName : " + Players[turnNumber % playerCount].playerName + " CurrentState: " + currentState.ToString();
         }
+        void updateScores()
+        {
+            for (int i = playerQuests[turnNumber % playerCount].Count-1; i>=0; i--)
+            {
+                switch(playerQuests[turnNumber % playerCount][i].type)
+                {
+                    case 2:
+                        JsonQuestsPanda currentQuest = (JsonQuestsPanda)playerQuests[turnNumber % playerCount][i];
+                        //if (hasBambooPieces(Players[turnNumber % playerCount], currentQuest))
+                        if(Players[turnNumber % playerCount].PlayerBamboo["Red"] >= currentQuest.Red
+                            && Players[turnNumber % playerCount].PlayerBamboo["Yellow"] >= currentQuest.Yellow 
+                            && Players[turnNumber % playerCount].PlayerBamboo["Green"] >= currentQuest.Green)
+                        {
+                            reduceBamboo(Players[turnNumber % playerCount], currentQuest);
+                            Players[turnNumber % playerCount].score += currentQuest.score;
+                            playerQuests[turnNumber % playerCount].RemoveAt(i);
+                            questButtons[i].SetActive(false);
+                        }
+                        break;
+                    case 3:
+                        JsonQuestsFarmer currentQuest1= (JsonQuestsFarmer)playerQuests[turnNumber % playerCount][i];
+                        for (int k = 0; k < 100; k++)
+                        {
+                            bool flag = true;
+                         
+                            for (int j = 0; j < 100; j++)
+                                if (board[k, j] != null)
+                                {
+                                    if (board[k, j].Color == currentQuest1.Color
+                                        && board[k, j].bambooCount == currentQuest1.bambooCount
+                                        && board[k, j].hasDoubleGrowth == currentQuest1.hasDoubleGrowth
+                                        && board[k, j].hasNoEating == currentQuest1.hasNoEating)
+                                    {
+                                        Players[turnNumber % playerCount].score += currentQuest1.score;
+                                        playerQuests[turnNumber % playerCount].RemoveAt(i);
+                                        questButtons[i].SetActive(false);
+                                        flag = false;
+                                        break;
+                                    }
+                                }
+                            if (!flag)
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        bool hasBambooPieces(Player player,JsonQuestsPanda quest)
+        {
+           
+            if (Players[turnNumber % playerCount].PlayerBamboo["Red"] < quest.Red && quest.Red>0)
+                return false;
+            if (Players[turnNumber % playerCount].PlayerBamboo["Yellow"] < quest.Yellow && quest.Yellow>0)
+                return false;
+            if (Players[turnNumber % playerCount].PlayerBamboo["Green"] < quest.Green && quest.Green>0)
+                return false;
+            return true;
+        }
+        void reduceBamboo(Player player, JsonQuestsPanda quest)
+        {
+            Players[turnNumber % playerCount].PlayerBamboo["Green"] -= quest.Green;
+            Players[turnNumber % playerCount].PlayerBamboo["Red"] -= quest.Red;
+            Players[turnNumber % playerCount].PlayerBamboo["Yellow"] -= quest.Yellow;
+        }
         void showQuests()
         {
-            for(int i=0;i<playerQuests[turnNumber%playerCount].Count;i++)
+            for (int i = 0; i < 5; i++)
+                questButtons[i].SetActive(false);
+            for (int i=0;i<playerQuests[turnNumber%playerCount].Count;i++)
             {
                 questButtons[i].SetActive(true);
                 questButtons[i].GetComponent<Image>().sprite = playerQuestsSprites[turnNumber%playerCount][i].sprite;
