@@ -7,6 +7,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using Photon.Pun;
 //using Other;
 
 namespace nume
@@ -137,18 +138,20 @@ namespace nume
         public Button farmerButton;
         public Button pandaButton;
         public Button confirmActionButton;
+        public Button questMenuButton;
         public Button eventText;
         public GameObject ScoreBox;
         public GameObject[] tileButtons = new GameObject[3];
         public GameObject[] diceButtons = new GameObject[5];
         public GameObject[] improvementButtons = new GameObject[2];
-        public GameObject[] questButtons = new GameObject[5];
+        public GameObject[] questHandButtons = new GameObject[5];
+        public GameObject[] questSelectButtons = new GameObject[2];
 
         GameObject[] ScoreBoxList = new GameObject[4];
 
         private Tile[] FlatTilesArray = new Tile[23];
         private Tile[] FarmerQuestSprites = new Tile[7];
-        private Tile[] PandaQuestSprites = new Tile[4];
+        private Tile[] PandaQuestSprites = new Tile[5];
         public Tile[] bambooTileArray = new Tile[5];
         public List<Tile> flatTileList;
         public List<Tile> pandaQuestSpritesList;
@@ -157,6 +160,7 @@ namespace nume
         public List<JsonQuestsFarmer> jsonFarmerQuestList;
         public List<JsonQuestsPanda> jsonPandaQuestList;
         public Tile[] diceSprites = new Tile[5];
+        public Tile[] questSelectButtonsSprites = new Tile[2];
         public Tile[] improvementSprites = new Tile[2];
         BoardTile[,] board = new BoardTile[100, 100];
         Player[] Players = new Player[2];
@@ -186,12 +190,13 @@ namespace nume
         bool Action3Once = true;
         bool sameAction = false;
         bool selected = false;
-        int selectedImprovement = 2;
         int FirstAction = 4;
         int randomWeatherCondition;
         int turnNumber = 0;
+        int selectedImprovement = 2;
         int selectedButton = 3;
         int selectedNumber = 3;
+        int selectedQuest = 3;
         Tile TileToBePlaced;
         Tile[] SelectedTile = new Tile[10];
         int[] number = new int[23];
@@ -251,7 +256,9 @@ namespace nume
             for (int i = 0; i < 5; i++)
                 diceButtons[i].SetActive(false);
             for (int i = 0; i < 5; i++)
-                questButtons[i].SetActive(false);
+                questHandButtons[i].SetActive(false);
+            for (int i = 0; i < 2; i++)
+                questSelectButtons[i].SetActive(false);
         }
 
         private void JsonInitializations()
@@ -293,9 +300,9 @@ namespace nume
                 Action2Once = true;
                 Action3Once = true;
                 FirstAction = 4;
+                sameAction = false;
                 if (WeatherOnce == true)
                     WeatherSelection();
-                showQuests();
                 updateScores();
             }
 
@@ -309,13 +316,13 @@ namespace nume
             if (currentState == State.ACTION1)
             {
 
+                showQuests();
                 Weather2Once = true;
                 WeatherOnce = true;
 
 
-                if (Action1Once == true && selected == true)
+                if (Action1Once == true )
                 {
-                    makeHoverTiles();
                     performAction(currentAction);
                 }
                 else
@@ -333,7 +340,6 @@ namespace nume
                 if (Action2Once == true)
                 {
                     performAction(currentAction);
-                    makeHoverTiles();
                 }
                 else
                 {
@@ -349,7 +355,6 @@ namespace nume
                 if (Action3Once == true)
                 {
                     performAction(currentAction);
-                    makeHoverTiles();
                 }
                 else
                 {
@@ -386,7 +391,7 @@ namespace nume
                             reduceBamboo(Players[turnNumber % playerCount], currentQuest);
                             Players[turnNumber % playerCount].score += currentQuest.score;
                             playerQuests[turnNumber % playerCount].RemoveAt(i);
-                            questButtons[i].SetActive(false);
+                            questHandButtons[i].SetActive(false);
                         }
                         break;
                     case 3:
@@ -405,7 +410,7 @@ namespace nume
                                     {
                                         Players[turnNumber % playerCount].score += currentQuest1.score;
                                         playerQuests[turnNumber % playerCount].RemoveAt(i);
-                                        questButtons[i].SetActive(false);
+                                        questHandButtons[i].SetActive(false);
                                         flag = false;
                                         break;
                                     }
@@ -439,19 +444,19 @@ namespace nume
         void showQuests()
         {
             for (int i = 0; i < 5; i++)
-                questButtons[i].SetActive(false);
+                questHandButtons[i].SetActive(false);
             for (int i=0;i<playerQuests[turnNumber%playerCount].Count;i++)
             {
-                questButtons[i].SetActive(true);
-                questButtons[i].GetComponent<Image>().sprite = playerQuestsSprites[turnNumber%playerCount][i].sprite;
+                questHandButtons[i].SetActive(true);
+                questHandButtons[i].GetComponent<Image>().sprite = playerQuestsSprites[turnNumber%playerCount][i].sprite;
 
             }
         }
         private void WeatherSelection()
         {
             actionNumber = 2;
-            randomWeatherCondition = UnityEngine.Random.Range(0, 6);
-            //randomWeatherCondition = 4;
+            //randomWeatherCondition = UnityEngine.Random.Range(0, 6);
+            randomWeatherCondition = 2;
             switch (randomWeatherCondition)
             {
                 case 0://Sun
@@ -714,7 +719,7 @@ namespace nume
             selected = false;
             currentAction = 1;
             selectedButton = 3;
-            if (FirstAction != 1)
+            if (FirstAction != 1 || sameAction==true)
                 TileSelection();
 
 
@@ -726,6 +731,10 @@ namespace nume
         public void changeActionToPanda()
         {
             currentAction = 3;
+        }
+        public void changeActionToQuest()
+        {
+            currentAction = 4;
         }
         public void changeState()
         {
@@ -943,40 +952,45 @@ namespace nume
             {
                 eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "You may place a land tile!";
                 // Left mouse click -> add path tile
-                if (Input.GetMouseButtonDown(0))
+                if (selected == true)
                 {
 
-
-                    if (neighbourCount(mousePos) >= 2 && board[mousePos.x, mousePos.y] == null && (FirstAction != 1 || sameAction == true))
+                    makeHoverTiles();
+                    if (Input.GetMouseButtonDown(0))
                     {
 
-                        PlaceTile(mousePos, pathMap, TileToBePlaced);
-                        switch (currentState)
+
+                        if (neighbourCount(mousePos) >= 2 && board[mousePos.x, mousePos.y] == null && (FirstAction != 1 || sameAction == true))
                         {
-                            case State.ACTION1:
-                                Action1Once = false;
-                                FirstAction = 1;
-                                break;
-                            case State.ACTION2:
-                                Action2Once = false;
-                                break;
-                            case State.ACTION3:
-                                Action3Once = false;
-                                break;
-                            default:
-                                break;
+
+                            PlaceTile(mousePos, pathMap, TileToBePlaced);
+                            switch (currentState)
+                            {
+                                case State.ACTION1:
+                                    Action1Once = false;
+                                    FirstAction = 1;
+                                    break;
+                                case State.ACTION2:
+                                    Action2Once = false;
+                                    break;
+                                case State.ACTION3:
+                                    Action3Once = false;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            currentAction = 0;
                         }
-                        currentAction = 0;
                     }
                 }
-                //Mouse over -> highlight tile
 
             }
 
             if (currentAction == 2)
             {
                 eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "You may move the farmer to grow bamboo!";
-                // Left mouse click -> add path tile
+
+                makeHoverTiles();
                 if (Input.GetMouseButtonDown(0))
                 {
                     if (board[mousePos.x, mousePos.y] != null && (isSameLine1(previousFarmerPos, mousePos) ||
@@ -1019,7 +1033,8 @@ namespace nume
             {
                 eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "You may move the panda to eat bamboo!";
 
-                // Left mouse click -> add path tile
+
+                makeHoverTiles();
                 if (Input.GetMouseButtonDown(0))
                 {
                     if (board[mousePos.x, mousePos.y] != null &&
@@ -1056,6 +1071,19 @@ namespace nume
 
                     }
                 }
+            }
+
+            if (currentAction == 4)
+            {
+                eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "You may select a quest!";
+
+                for (int i = 0; i < 2; i++)
+                {
+                    questSelectButtons[i].SetActive(true);
+                    questSelectButtons[i].GetComponent<Image>().sprite = questSelectButtonsSprites[i].sprite;
+                }
+
+
             }
         }
         void TileSelection()
@@ -1097,7 +1125,7 @@ namespace nume
             tileButtons[2].SetActive(false);
             jsonTileAtributes = jsonTileList[number[1]];
             jsonTileList.RemoveAt(number[1]);
-            (TileToBePlaced, selectedNumber) = (SelectedTile[selectedButton], number[selectedButton]);
+            TileToBePlaced = SelectedTile[selectedButton];
             flatTileList.Remove(TileToBePlaced);
             selected = true;
         }
@@ -1110,7 +1138,7 @@ namespace nume
             tileButtons[2].SetActive(false);
             jsonTileAtributes = jsonTileList[number[2]];
             jsonTileList.RemoveAt(number[2]);
-            (TileToBePlaced, selectedNumber) = (SelectedTile[selectedButton], number[selectedButton]);
+            TileToBePlaced = SelectedTile[selectedButton];
             flatTileList.Remove(TileToBePlaced);
             selected = true;
         }
@@ -1168,6 +1196,70 @@ namespace nume
                 improvementButtons[i].SetActive(false);
             selectedImprovement = 1;
 
+        }
+
+        public void SelectQuest1()
+        {
+            selectedQuest = 0;
+            for (int i = 0; i < 2; i++)
+                questSelectButtons[i].SetActive(false);
+            if (jsonFarmerQuestList.Count != 0)
+            {
+                int nr1 = UnityEngine.Random.Range(0, jsonFarmerQuestList.Count);
+                playerQuests[turnNumber % playerCount].Add(jsonFarmerQuestList[nr1]);
+                playerQuestsSprites[turnNumber % playerCount].Add(farmerQuestSpritesList[nr1]);
+                jsonFarmerQuestList.RemoveAt(nr1);
+                farmerQuestSpritesList.RemoveAt(nr1);
+
+                switch (currentState)
+                {
+                    case State.ACTION1:
+                        Action1Once = false;
+                        FirstAction = 4;
+                        break;
+                    case State.ACTION2:
+                        Action2Once = false;
+                        break;
+                    case State.ACTION3:
+                        Action3Once = false;
+                        break;
+                    default:
+                        break;
+                }
+                currentAction = 0;
+            }
+
+        }
+        public void SelectQuest2()
+        {
+            selectedQuest = 1;
+            for (int i = 0; i < 2; i++)
+                questSelectButtons[i].SetActive(false);
+            if (jsonPandaQuestList.Count != 0)
+            {
+                int nr1 = UnityEngine.Random.Range(0, jsonPandaQuestList.Count);
+                playerQuests[turnNumber % playerCount].Add(jsonPandaQuestList[nr1]);
+                playerQuestsSprites[turnNumber % playerCount].Add(pandaQuestSpritesList[nr1]);
+                jsonPandaQuestList.RemoveAt(nr1);
+                pandaQuestSpritesList.RemoveAt(nr1);
+
+                switch (currentState)
+                {
+                    case State.ACTION1:
+                        Action1Once = false;
+                        FirstAction = 4;
+                        break;
+                    case State.ACTION2:
+                        Action2Once = false;
+                        break;
+                    case State.ACTION3:
+                        Action3Once = false;
+                        break;
+                    default:
+                        break;
+                }
+                currentAction = 0;
+            }
         }
 
         void makeHoverTiles()
