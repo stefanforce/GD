@@ -731,6 +731,7 @@ GameObject:
   - component: {fileID: 147969550}
   - component: {fileID: 147969549}
   - component: {fileID: 147969551}
+  - component: {fileID: 147969552}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -851,6 +852,28 @@ MonoBehaviour:
   improvementSprites:
   - {fileID: 11400000, guid: fe5a8680a8eb5f84ba8fb1aa0a1bfa58, type: 2}
   - {fileID: 11400000, guid: edbe00aa4a1b50a489825e52e5c2384f, type: 2}
+--- !u!114 &147969552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147969548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &155915410
 GameObject:
   m_ObjectHideFlags: 0

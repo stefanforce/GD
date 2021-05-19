@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using Photon.Pun;
+using Newtonsoft.Json;
 //using Other;
 
 namespace nume
@@ -72,7 +73,7 @@ namespace nume
     }
 
 
-    public class Map : MonoBehaviour
+    public class Map : MonoBehaviourPun
     {
         public class BoardTile
         {
@@ -200,25 +201,41 @@ namespace nume
         Tile TileToBePlaced;
         Tile[] SelectedTile = new Tile[10];
         int[] number = new int[23];
-        int playerCount = 2;
+        int playerCount = PhotonNetwork.PlayerList.Length;
         JsonTiles jsonTileAtributes;
         List<List<Quest>> playerQuests = new List<List<Quest>>();
         List<List<Tile>> playerQuestsSprites = new List<List<Tile>>();
+        List<Tilemap> tilemapList;
 
         // Start is called before the first frame update
         void Start()
         {
+            PhotonView photonView = PhotonView.Get(this);
             JsonInitializations();
-
+            tilemapList = new List<Tilemap>();
+            tilemapList.Add(pathMap);
+            tilemapList.Add(farmerMap);
+            tilemapList.Add(pandaMap);
+            tilemapList.Add(bambooMap);
+            tilemapList.Add(improvementMap);
             grid = gameObject.GetComponent<Grid>();
-            PlaceTile(pond, pathMap, centerTile);
-            pandaMap.SetTile(previousPandaPos, pandaTile);
-            farmerMap.SetTile(previousFarmerPos, farmerTile);
+            var pondString = JsonConvert.SerializeObject(pond);
+
+            photonView.RPC("PlaceTile", RpcTarget.All, pondString, tilemapList.IndexOf(pathMap), centerTile);
+            //PlaceTile(pond, pathMap, centerTile);
+            photonView.RPC("PlaceTileRPC", RpcTarget.All, previousPandaPos, pandaMap, pandaTile);
+            photonView.RPC("PlaceTileRPC", RpcTarget.All, previousFarmerPos, farmerMap, farmerTile);
+            //pandaMap.SetTile(previousPandaPos, pandaTile);
+            //farmerMap.SetTile(previousFarmerPos, farmerTile);
             board[pond.x, pond.y].isPond = true;
             currentState = State.ACTION1;
             deactivateButtons();
-            Players[0] = new Player("Player1");
-            Players[1] = new Player("Player2");
+            int i = 0;
+            foreach (var player in PhotonNetwork.PlayerList)
+            {
+                Players[i] = new Player(player.NickName);
+                i++;
+            }
             instantiateScoreBoxes();
 
             instantiateQuests();
@@ -292,75 +309,80 @@ namespace nume
         void Update()
         {
 
-
-            //if(myturn) do function below
-            if (currentState == State.WEATHER)
+            //if(Players[turnNumber%playerCount].playerName==PhotonNetwork.NickName)
+            
             {
-
-                Action2Once = true;
-                Action3Once = true;
-                FirstAction = 4;
-                sameAction = false;
-                if (WeatherOnce == true)
-                    WeatherSelection();
-                updateScores();
-            }
-
-            if (currentState == State.WEATHER2)
-            {
-                WeatherOnce = true;
-                if (Weather2Once == true)
-                    doWeatherCondition();
-            }
-
-            if (currentState == State.ACTION1)
-            {
-
-                showQuests();
-                Weather2Once = true;
-                WeatherOnce = true;
-
-
-                if (Action1Once == true )
+                if (currentState == State.WEATHER)
                 {
-                    performAction(currentAction);
+
+                    Action2Once = true;
+                    Action3Once = true;
+                    FirstAction = 4;
+                    sameAction = false;
+                    if (WeatherOnce == true)
+                        WeatherSelection();
+                    updateScores();
                 }
-                else
-                {
-                    eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press confirm to end this action!";
-                    interactiveMap.SetTile(GetMousePosition(), null);
 
+                if (currentState == State.WEATHER2)
+                {
+                    WeatherOnce = true;
+                    if (Weather2Once == true)
+                        doWeatherCondition();
                 }
-            }
-            if (currentState == State.ACTION2)
-            {
 
-                Action1Once = true;
-
-                if (Action2Once == true)
+                if (currentState == State.ACTION1)
                 {
-                    performAction(currentAction);
+
+                    showQuests();
+                    Weather2Once = true;
+                    WeatherOnce = true;
+
+
+                    if (Action1Once == true)
+                    {
+                        performAction(currentAction);
+                    }
+                    else
+                    {
+                        eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press confirm to end this action!";
+                       // photonView.RPC("PlaceTileRPC", RpcTarget.All, GetMousePosition(), interactiveMap, null);
+                        interactiveMap.SetTile(GetMousePosition(), null);
+
+                    }
                 }
-                else
+                if (currentState == State.ACTION2)
                 {
-                    eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press confirm to end this action!";
-                    interactiveMap.SetTile(GetMousePosition(), null);
 
+                    Action1Once = true;
+
+                    if (Action2Once == true)
+                    {
+                        performAction(currentAction);
+                    }
+                    else
+                    {
+                        eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press confirm to end this action!";
+                       // photonView.RPC("PlaceTileRPC", RpcTarget.All, GetMousePosition(), interactiveMap, null);
+                        interactiveMap.SetTile(GetMousePosition(), null);
+
+                    }
                 }
-            }
-            if (currentState == State.ACTION3)
-            {
-                Action2Once = true;
-
-                if (Action3Once == true)
+                if (currentState == State.ACTION3)
                 {
-                    performAction(currentAction);
-                }
-                else
-                {
-                    eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press confirm to end this action!";
-                    interactiveMap.SetTile(GetMousePosition(), null);
+                    Action2Once = true;
 
+                    if (Action3Once == true)
+                    {
+                        performAction(currentAction);
+                    }
+                    else
+                    {
+                        eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press confirm to end this action!";
+                        //photonView.RPC("PlaceTileRPC", RpcTarget.All, GetMousePosition(), interactiveMap, null);
+                        interactiveMap.SetTile(GetMousePosition(), null);
+
+                    }
                 }
             }
             for (int k = 0; k < playerCount; k++)
@@ -542,14 +564,17 @@ namespace nume
             Vector3Int mousePos = GetMousePosition();
             if (!mousePos.Equals(previousMousePos))
             {
-                interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
-                interactiveMap.SetTile(mousePos, farmerTile);
+               // photonView.RPC("PlaceTileRPC", RpcTarget.All, previousMousePos, interactiveMap, null);
+              // photonView.RPC("PlaceTileRPC", RpcTarget.All, mousePos, interactiveMap, farmerTile);
+              interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
+               interactiveMap.SetTile(mousePos, farmerTile);
                 previousMousePos = mousePos;
             }
             if (Input.GetMouseButtonDown(0))
             {
                 addBamboo(mousePos);
                 Weather2Once = false;
+                //photonView.RPC("PlaceTileRPC", RpcTarget.All, previousMousePos, interactiveMap, null);
                 interactiveMap.SetTile(mousePos, null);
                 eventText.GetComponentInChildren<UnityEngine.UI.Text>().text = "Press the confirm button to validate the roll!";
 
@@ -602,14 +627,21 @@ namespace nume
 
             return grid.WorldToCell(mouseWorldPos);
         }
-        void PlaceTile(Vector3Int pos, Tilemap tilemap, Tile tile)
+        [PunRPC]
+        void PlaceTile(String posString, int tilemapIndex, Tile tile)
         {
-
+            Vector3Int pos = JsonConvert.DeserializeObject<Vector3Int>(posString);
             board[pos.x, pos.y] = new BoardTile(pos.x, pos.y, tile);
+            Tilemap tilemap = tilemapList[tilemapIndex];
             tilemap.SetTile(pos, tile);
             if (pos != pond)
                 transferAtributes(board[pos.x, pos.y], jsonTileAtributes);
 
+        }
+        [PunRPC]
+        void PlaceTileRPC(Vector3Int pos,Tilemap tilemap,Tile tile)
+        {
+            tilemap.SetTile(pos, tile);
         }
         void transferAtributes(BoardTile to, JsonTiles from)
         {
@@ -904,7 +936,8 @@ namespace nume
                 board[pos.x, pos.y].bambooCount = 4;
                 count = 4;
             }
-            bambooMap.SetTile(pos, bambooTileArray[count]);
+            photonView.RPC("PlaceTileRPC", RpcTarget.All, pos, bambooMap, bambooTileArray[count]);
+            //bambooMap.SetTile(pos, bambooTileArray[count]);
         }
         void removeBamboo(Vector3Int pos)
         {
@@ -916,7 +949,8 @@ namespace nume
                 board[pos.x, pos.y].bambooCount = 0;
                 count = 0;
             }
-            bambooMap.SetTile(pos, bambooTileArray[count]);
+            photonView.RPC("PlaceTileRPC", RpcTarget.All, pos, bambooMap, bambooTileArray[count]);
+            //bambooMap.SetTile(pos, bambooTileArray[count]);
             Players[turnNumber % playerCount].PlayerBamboo[board[pos.x, pos.y].Color] += 1;
         }
         void setColor(int number, Vector3Int pos)
@@ -962,8 +996,9 @@ namespace nume
 
                         if (neighbourCount(mousePos) >= 2 && board[mousePos.x, mousePos.y] == null && (FirstAction != 1 || sameAction == true))
                         {
-
-                            PlaceTile(mousePos, pathMap, TileToBePlaced);
+                            var mousePosString = JsonConvert.SerializeObject(mousePos);
+                            photonView.RPC("PlaceTile", RpcTarget.All, mousePosString, pathMap, TileToBePlaced);
+                            //PlaceTile(mousePos, pathMap, TileToBePlaced);
                             switch (currentState)
                             {
                                 case State.ACTION1:
@@ -1000,8 +1035,10 @@ namespace nume
                        previousFarmerPos.y == mousePos.y) &&
                       (FirstAction != 2 || sameAction == true))
                     {
-                        farmerMap.SetTile(previousFarmerPos, null);
-                        farmerMap.SetTile(mousePos, farmerTile);
+                        photonView.RPC("PlaceTileRPC", RpcTarget.All, previousFarmerPos, farmerMap, null);
+                        photonView.RPC("PlaceTileRPC", RpcTarget.All, mousePos, farmerMap, farmerTile);
+                        //farmerMap.SetTile(previousFarmerPos, null);
+                        //farmerMap.SetTile(mousePos, farmerTile);
                         previousFarmerPos = mousePos;
                         if (mousePos != pond)
                         {
@@ -1045,8 +1082,10 @@ namespace nume
                         previousPandaPos.y == mousePos.y) &&
                         (FirstAction != 3 || sameAction == true))
                     {
-                        pandaMap.SetTile(previousPandaPos, null);
-                        pandaMap.SetTile(mousePos, pandaTile);
+                        photonView.RPC("PlaceTileRPC", RpcTarget.All, previousPandaPos, pandaMap, null);
+                        photonView.RPC("PlaceTileRPC", RpcTarget.All, mousePos, pandaMap, pandaTile);
+                        //pandaMap.SetTile(previousPandaPos, null);
+                        //pandaMap.SetTile(mousePos, pandaTile);
                         previousPandaPos = mousePos;
                         if (mousePos != pond)
                         {
@@ -1270,16 +1309,22 @@ namespace nume
                 switch (currentAction)
                 {
                     case 1:
+                        //photonView.RPC("PlaceTileRPC", RpcTarget.All, previousMousePos, interactiveMap, null);
+                       // photonView.RPC("PlaceTileRPC", RpcTarget.All, mousePos, interactiveMap, hoverTile);
                         interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
                         interactiveMap.SetTile(mousePos, hoverTile);
                         previousMousePos = mousePos;
                         break;
                     case 2:
+                        //photonView.RPC("PlaceTileRPC", RpcTarget.All, previousMousePos, interactiveMap, null);
+                       // photonView.RPC("PlaceTileRPC", RpcTarget.All, mousePos, interactiveMap, farmerTile);
                         interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
                         interactiveMap.SetTile(mousePos, farmerTile);
                         previousMousePos = mousePos;
                         break;
                     case 3:
+                       // photonView.RPC("PlaceTileRPC", RpcTarget.All, previousMousePos, interactiveMap, null);
+                        //photonView.RPC("PlaceTileRPC", RpcTarget.All, mousePos, interactiveMap, pandaTile);
                         interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
                         interactiveMap.SetTile(mousePos, pandaTile);
                         previousMousePos = mousePos;

@@ -398,6 +398,7 @@ public class LobbyRoomScript : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.PlayerList.Length >= 1)
         {
             PhotonNetwork.LoadLevel("GameScene");
+            
             enabled = false;
         }
         else
