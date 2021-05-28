@@ -82,11 +82,14 @@
     <Compile Include="Assets\Scripts\Other.cs" />
     <Compile Include="Assets\Scripts\PhotonNetworking.cs" />
     <Compile Include="Assets\Scripts\SetVolume.cs" />
+    <Compile Include="Assets\Scripts\cameraManager.cs" />
+    <Compile Include="Assets\Scripts\highScoreTableScript.cs" />
     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Assets\Photon\PhotonUnityNetworking\changelog.txt" />
     <None Include="Assets\Photon\PhotonLibs\changes-library.txt" />
     <None Include="Assets\Photon\PhotonUnityNetworking\readme.txt" />
     <None Include="Assets\Photon\PhotonLibs\Photon3Unity3D.xml" />
+    <None Include="Assets\Resources\playerPoints.txt" />
     <None Include="Assets\Photon\PhotonUnityNetworking\link.xml" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

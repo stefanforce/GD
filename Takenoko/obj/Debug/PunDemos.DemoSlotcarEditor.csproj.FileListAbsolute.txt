@@ -284,3 +284,6 @@ D:\Facultate\GD\Takenoko\obj\Debug\PunDemos.DemoSlotcarEditor.csproj.CoreCompile
 D:\Facultate\GD\Takenoko\obj\Debug\PunDemos.DemoSlotcarEditor.csproj.CopyComplete
 D:\Facultate\GD\Takenoko\obj\Debug\PunDemos.DemoSlotcarEditor.dll
 D:\Facultate\GD\Takenoko\obj\Debug\PunDemos.DemoSlotcarEditor.pdb
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.dll
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.pdb
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.xml

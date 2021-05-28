@@ -263,3 +263,6 @@ D:\Facultate\GD\Takenoko\obj\Debug\PhotonRealtime.csproj.CoreCompileInputs.cache
 D:\Facultate\GD\Takenoko\obj\Debug\PhotonRealtime.csproj.CopyComplete
 D:\Facultate\GD\Takenoko\obj\Debug\PhotonRealtime.dll
 D:\Facultate\GD\Takenoko\obj\Debug\PhotonRealtime.pdb
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.dll
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.pdb
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.xml

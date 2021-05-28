@@ -282,3 +282,6 @@ D:\Facultate\GD\Takenoko\obj\Debug\PhotonUnityNetworking.Utilities.Culling.Edito
 D:\Facultate\GD\Takenoko\obj\Debug\PhotonUnityNetworking.Utilities.Culling.Editor.csproj.CopyComplete
 D:\Facultate\GD\Takenoko\obj\Debug\PhotonUnityNetworking.Utilities.Culling.Editor.dll
 D:\Facultate\GD\Takenoko\obj\Debug\PhotonUnityNetworking.Utilities.Culling.Editor.pdb
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.dll
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.pdb
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.xml

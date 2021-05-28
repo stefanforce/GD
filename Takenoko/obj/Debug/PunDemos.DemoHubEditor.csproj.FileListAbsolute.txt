@@ -279,3 +279,6 @@ D:\Facultate\GD\Takenoko\obj\Debug\PunDemos.DemoHubEditor.csproj.CoreCompileInpu
 D:\Facultate\GD\Takenoko\obj\Debug\PunDemos.DemoHubEditor.csproj.CopyComplete
 D:\Facultate\GD\Takenoko\obj\Debug\PunDemos.DemoHubEditor.dll
 D:\Facultate\GD\Takenoko\obj\Debug\PunDemos.DemoHubEditor.pdb
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.dll
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.pdb
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.xml

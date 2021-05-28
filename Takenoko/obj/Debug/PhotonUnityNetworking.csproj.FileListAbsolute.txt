@@ -264,3 +264,6 @@ D:\Facultate\GD\Takenoko\obj\Debug\PhotonUnityNetworking.csproj.CoreCompileInput
 D:\Facultate\GD\Takenoko\obj\Debug\PhotonUnityNetworking.csproj.CopyComplete
 D:\Facultate\GD\Takenoko\obj\Debug\PhotonUnityNetworking.dll
 D:\Facultate\GD\Takenoko\obj\Debug\PhotonUnityNetworking.pdb
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.dll
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.pdb
+D:\Facultate\GD\Takenoko\Temp\bin\Debug\Newtonsoft.Json.xml

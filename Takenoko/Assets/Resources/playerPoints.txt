@@ -1,0 +1,1 @@
+[{"playerName":"Stefan2","score":5,"questsCompleted":1,"PlayerBamboo":{"Yellow":0,"Red":2,"Green":0}},{"playerName":"Stefan1","score":0,"questsCompleted":0,"PlayerBamboo":{"Yellow":0,"Red":-1,"Green":0}}]
