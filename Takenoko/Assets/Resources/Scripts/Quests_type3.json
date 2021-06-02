@@ -1,0 +1,65 @@
+[
+  {
+    "name": "objectiveB_20",
+    "bambooCount": 4,
+    "Color": "Green",
+    "hasNoEating": false,
+    "hasDoubleGrowth": false,
+    "type": 3,
+    "score": 5
+  },
+  {
+    "name": "objectiveB_21",
+    "bambooCount": 4,
+    "Color": "Yellow",
+    "hasNoEating": false,
+    "hasDoubleGrowth": false,
+    "type": 3,
+    "score": 6
+  },
+  {
+    "name": "objectiveB_22",
+    "bambooCount": 4,
+    "Color": "Red",
+    "hasNoEating": false,
+    "hasDoubleGrowth": false,
+    "type": 3,
+    "score": 7
+  },
+  {
+    "name": "objectiveB_23",
+    "bambooCount": 4,
+    "Color": "Green",
+    "hasNoEating": true,
+    "hasDoubleGrowth": false,
+    "type": 3,
+    "score": 4
+  },
+  {
+    "name": "objectiveB_24",
+    "bambooCount": 4,
+    "Color": "Yellow",
+    "hasNoEating": true,
+    "hasDoubleGrowth": false,
+    "type": 3,
+    "score": 5
+  },
+  {
+    "name": "objectiveB_25",
+    "bambooCount": 4,
+    "Color": "Red",
+    "hasNoEating": true,
+    "hasDoubleGrowth": false,
+    "type": 3,
+    "score": 6
+  },
+  {
+    "name": "objectiveB_26",
+    "bambooCount": 4,
+    "Color": "Red",
+    "hasNoEating": false,
+    "hasDoubleGrowth": true,
+    "type": 3,
+    "score": 3
+  }
+]

@@ -3,6 +3,7 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - LobbyRoomScript
     - SetVolume
+    - cameraManager.cameraManager
     - highScoreTableScript
     - nume.Map
     PhotonUnityNetworking.Demos.dll:
@@ -59,7 +60,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Text
     - UnityEngine.UI.VerticalLayoutGroup
   sceneClasses:
-    Assets/Scenes/EndScreen.unity:
+    Assets/Resources/Scenes/EndScreen.unity:
     - Class: 1
       Script: {instanceID: 0}
     - Class: 4
@@ -79,17 +80,17 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11258}
     - Class: 114
-      Script: {instanceID: 11294}
+      Script: {instanceID: 11296}
     - Class: 114
-      Script: {instanceID: 11684}
+      Script: {instanceID: 11686}
     - Class: 114
-      Script: {instanceID: 12434}
+      Script: {instanceID: 12436}
     - Class: 114
-      Script: {instanceID: 14100}
+      Script: {instanceID: 14104}
     - Class: 114
-      Script: {instanceID: 14802}
+      Script: {instanceID: 14806}
     - Class: 114
-      Script: {instanceID: 14870}
+      Script: {instanceID: 14874}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -104,7 +105,7 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 224
       Script: {instanceID: 0}
-    Assets/Scenes/GameScene.unity:
+    Assets/Resources/Scenes/GameScene.unity:
     - Class: 1
       Script: {instanceID: 0}
     - Class: 4
@@ -128,19 +129,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11260}
     - Class: 114
-      Script: {instanceID: 11284}
+      Script: {instanceID: 11286}
     - Class: 114
-      Script: {instanceID: 11294}
+      Script: {instanceID: 11296}
     - Class: 114
-      Script: {instanceID: 11684}
+      Script: {instanceID: 11686}
     - Class: 114
-      Script: {instanceID: 12434}
+      Script: {instanceID: 12436}
     - Class: 114
-      Script: {instanceID: 14100}
+      Script: {instanceID: 13738}
     - Class: 114
-      Script: {instanceID: 14664}
+      Script: {instanceID: 14104}
     - Class: 114
-      Script: {instanceID: 14802}
+      Script: {instanceID: 14668}
+    - Class: 114
+      Script: {instanceID: 14806}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -163,7 +166,7 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 1839735485
       Script: {instanceID: 0}
-    Assets/Scenes/LobbyRoom.unity:
+    Assets/Resources/Scenes/LobbyRoom.unity:
     - Class: 1
       Script: {instanceID: 0}
     - Class: 4
@@ -194,6 +197,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 82
       Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 90
       Script: {instanceID: 0}
     - Class: 91
@@ -215,59 +220,59 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11264}
     - Class: 114
-      Script: {instanceID: 11294}
+      Script: {instanceID: 11296}
     - Class: 114
-      Script: {instanceID: 11534}
+      Script: {instanceID: 11536}
     - Class: 114
-      Script: {instanceID: 11574}
+      Script: {instanceID: 11576}
     - Class: 114
-      Script: {instanceID: 11630}
+      Script: {instanceID: 11632}
     - Class: 114
-      Script: {instanceID: 11684}
+      Script: {instanceID: 11686}
     - Class: 114
-      Script: {instanceID: 12240}
+      Script: {instanceID: 12242}
     - Class: 114
-      Script: {instanceID: 12434}
+      Script: {instanceID: 12436}
     - Class: 114
-      Script: {instanceID: 12548}
+      Script: {instanceID: 12550}
     - Class: 114
-      Script: {instanceID: 12818}
+      Script: {instanceID: 12820}
     - Class: 114
-      Script: {instanceID: 12922}
+      Script: {instanceID: 12924}
     - Class: 114
-      Script: {instanceID: 13026}
+      Script: {instanceID: 13028}
     - Class: 114
-      Script: {instanceID: 13268}
+      Script: {instanceID: 13270}
     - Class: 114
-      Script: {instanceID: 13316}
+      Script: {instanceID: 13318}
     - Class: 114
-      Script: {instanceID: 13404}
+      Script: {instanceID: 13406}
     - Class: 114
-      Script: {instanceID: 13416}
+      Script: {instanceID: 13418}
     - Class: 114
-      Script: {instanceID: 13530}
+      Script: {instanceID: 13532}
     - Class: 114
-      Script: {instanceID: 13544}
+      Script: {instanceID: 13546}
     - Class: 114
-      Script: {instanceID: 13566}
+      Script: {instanceID: 13568}
     - Class: 114
-      Script: {instanceID: 13868}
+      Script: {instanceID: 13872}
     - Class: 114
-      Script: {instanceID: 13900}
+      Script: {instanceID: 13904}
     - Class: 114
-      Script: {instanceID: 13910}
+      Script: {instanceID: 13914}
     - Class: 114
-      Script: {instanceID: 14100}
+      Script: {instanceID: 14104}
     - Class: 114
-      Script: {instanceID: 14552}
+      Script: {instanceID: 14556}
     - Class: 114
-      Script: {instanceID: 14664}
+      Script: {instanceID: 14668}
     - Class: 114
-      Script: {instanceID: 14802}
+      Script: {instanceID: 14806}
     - Class: 114
-      Script: {instanceID: 14804}
+      Script: {instanceID: 14808}
     - Class: 114
-      Script: {instanceID: 14842}
+      Script: {instanceID: 14846}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -297,6 +302,12 @@ ScriptsOnlyBuild:
     - Class: 224
       Script: {instanceID: 0}
     - Class: 225
+      Script: {instanceID: 0}
+    - Class: 241
+      Script: {instanceID: 0}
+    - Class: 243
+      Script: {instanceID: 0}
+    - Class: 245
       Script: {instanceID: 0}
     - Class: 156049354
       Script: {instanceID: 0}
@@ -331,7 +342,7 @@ ScriptsOnlyBuild:
     className: Slider
   - hash:
       serializedVersion: 2
-      Hash: 10ec47c9fafff95625edda9901680275
+      Hash: b68f2bda927cc8b49b25c7b3dcb36f42
     assemblyName: Assembly-CSharp.dll
     namespaceName: nume
     className: Map
@@ -1225,6 +1236,12 @@ ScriptsOnlyBuild:
     className: FriendItem
   - hash:
       serializedVersion: 2
+      Hash: 4d6e960e3e9b5a547f0b70f0c8662275
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: cameraManager
+    className: cameraManager
+  - hash:
+      serializedVersion: 2
       Hash: c1933cc0a2f4ff6eb13333347497beb3
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -1313,12 +1330,6 @@ ScriptsOnlyBuild:
     assemblyName: PhotonUnityNetworking.Demos.dll
     namespaceName: Photon.Pun.Demo.Cockpit
     className: ScoreHelper
-  - hash:
-      serializedVersion: 2
-      Hash: 0982807d60fb3884d51d4baa9fdc156c
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Loader
   - hash:
       serializedVersion: 2
       Hash: e80cf4684910fdd7f091d85a19a93603
@@ -1423,12 +1434,6 @@ ScriptsOnlyBuild:
     className: MarkerTrack
   - hash:
       serializedVersion: 2
-      Hash: 016610d2a2f77cfce4c9745d8b1fe5c0
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: PhotonNetworking
-  - hash:
-      serializedVersion: 2
       Hash: d791aa6007fa3640be1164ea75bb087d
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -1471,7 +1476,7 @@ ScriptsOnlyBuild:
     className: SlotRacerSplashScreen
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 2122ad77b35f7f0129bab21633be2a24
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SetVolume
@@ -1705,7 +1710,7 @@ ScriptsOnlyBuild:
     className: PlayableTrack
   platform: 19
   scenePathNames:
-  - Assets/Scenes/LobbyRoom.unity
-  - Assets/Scenes/GameScene.unity
-  - Assets/Scenes/EndScreen.unity
-  playerPath: D:/Facultate/GD/Takenoko/Builds/Takenoko.exe
+  - Assets/Resources/Scenes/LobbyRoom.unity
+  - Assets/Resources/Scenes/GameScene.unity
+  - Assets/Resources/Scenes/EndScreen.unity
+  playerPath: D:/Download/GitHub/GD/Takenoko/Builds/Takenoko.exe

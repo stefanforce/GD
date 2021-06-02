@@ -21,7 +21,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 875, y: 371}
+  m_MinSize: {x: 875, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 1
 --- !u!114 &2
@@ -46,7 +46,7 @@ MonoBehaviour:
     y: 0
     width: 1536
     height: 781
-  m_MinSize: {x: 875, y: 371}
+  m_MinSize: {x: 875, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -112,10 +112,10 @@ MonoBehaviour:
     y: 30
     width: 1536
     height: 731
-  m_MinSize: {x: 918, y: 321}
-  m_MaxSize: {x: 16003, y: 8021}
+  m_MinSize: {x: 920, y: 492}
+  m_MaxSize: {x: 16005, y: 14042}
   vertical: 0
-  controlID: 131
+  controlID: 170
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -137,10 +137,10 @@ MonoBehaviour:
     y: 0
     width: 1079
     height: 731
-  m_MinSize: {x: 643, y: 321}
-  m_MaxSize: {x: 12003, y: 8021}
+  m_MinSize: {x: 645, y: 492}
+  m_MaxSize: {x: 12005, y: 14042}
   vertical: 1
-  controlID: 183
+  controlID: 97
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -163,10 +163,10 @@ MonoBehaviour:
     y: 0
     width: 1079
     height: 455
-  m_MinSize: {x: 643, y: 221}
-  m_MaxSize: {x: 12003, y: 4021}
+  m_MinSize: {x: 645, y: 221}
+  m_MaxSize: {x: 12005, y: 4021}
   vertical: 0
-  controlID: 184
+  controlID: 98
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -240,8 +240,8 @@ MonoBehaviour:
     y: 0
     width: 294
     height: 455
-  m_MinSize: {x: 240, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 242, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: AudioMixerWindow
+  m_Name: ProjectBrowser
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -266,14 +266,14 @@ MonoBehaviour:
     y: 455
     width: 1079
     height: 276
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_ActualView: {fileID: 13}
+  m_MinSize: {x: 231, y: 271}
+  m_MaxSize: {x: 10001, y: 10021}
+  m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 19}
   - {fileID: 13}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -328,7 +328,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_MixersTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 62f2feff
+    m_SelectedIDs: 
     m_LastClickedID: -69022
     m_ExpandedIDs: 12eb343c
     m_RenameOverlay:
@@ -400,7 +400,7 @@ MonoBehaviour:
       splitSize: 6
       xOffset: 0
     m_HorizontalSplitter:
-      ID: 28145
+      ID: 91
       splitterInitialOffset: 0
       currentActiveSplitter: -1
       realSizes: 43010000f3020000
@@ -565,9 +565,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 60f2feff
+      m_SelectedIDs: e8420000
       m_LastClickedID: 0
-      m_ExpandedIDs: 1af4feff88fefeff1001ffff1201ffff5403ffffe204ffff1608ffff3609ffff3a0bffff480cffffbc0cffffd00dffffec0dfffff80effffd017ffffa418fffff018ffff0e19ffff3019ffff7619ffff0e1affff261bffff141cffff7c1dffffec1dffff601fffff801fffff2020ffff3621ffff6024ffffd425ffff4228ffff6428ffff8a28fffffa29ffff502bffffca2cffff322effffa42fffffe831ffff5a33ffffca33ffff3c35ffff5038ffffc039ffff2e3cffffaa3dffff484dffff8873ffff0e7bffff1e91ffff9694ffffd095ffffe896ffffcca3ffff82a8ffffa4a8ffffc0aaffffccaaffffd4aafffff6b2ffff18b3ffff30b5ffff38b5ffff3cb5ffffe0b7ffff02b8ffff1abaffff22baffff26baffff0abcffff2cbcffff44beffff4cbeffff50beffff46c0ffff68c0ffff80c2ffff88c2ffff8cc2ffff58c4ffff7ac4ffff92c6ffff9ac6ffff9ec6ffff06c8ffff3ec9ffff60c9ffff78cbffff80cbffff84cbffff5acdffff7ccdffff94cfffff9ccfffffa0cfffff72d1ffff94d1ffffacd3ffffb4d3ffffb8d3ffff48d6ffff6ad6ffff82d8ffff8ad8ffff8ed8ffff56daffff78daffff90dcffff98dcffff9cdcffff02e3ffff24e3ffff3ce5ffff44e5ffff4ce5ffff76e6ffff98e6ffffb0e8ffffb8e8ffffbce8ffff60ebffff82ebffff9aedffffa2edffffa6edffffc4f1ffffe6f1fffffef3ffff06f4ffff0af4ffffcef6fffff0f6ffff0cf9ffff18f9ffff20f9ffff8cf9ffff2efbfffff4ffffffb8c70100eec8010046c9010074c9010016d50100105b0200e09a0200189d02000ca0020008a60200
+      m_ExpandedIDs: 4ee3ffff70e3ffff88e5ffff96e5ffff9ee5ffffb4ebffffde3d0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -627,9 +627,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 939.3416, y: 619.292, z: -102.57169}
+    m_Target: {x: 988.248, y: 713.8445, z: -270.75244}
     speed: 2
-    m_Value: {x: 939.3416, y: 619.292, z: -102.57169}
+    m_Value: {x: 988.248, y: 713.8445, z: -270.75244}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -679,9 +679,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 868.62177
+    m_Target: 980.67847
     speed: 2
-    m_Value: 868.62177
+    m_Value: 980.67847
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -776,34 +776,34 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Audio
+    - Assets
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Audio
+  - Assets
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: D:\Facultate\GD\Takenoko
+  m_LastProjectPath: D:\Download\GitHub\GD\Takenoko
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 47}
-    m_SelectedIDs: 18a70200
-    m_LastClickedID: 173848
-    m_ExpandedIDs: 00000000083f00000a3f00000c3f00000e3f0000103f0000123f0000143f00001e3f000088c90100
+    scrollPos: {x: 0, y: 31}
+    m_SelectedIDs: 323f0000
+    m_LastClickedID: 16178
+    m_ExpandedIDs: 00000000323f0000343f0000363f0000383f00003a3f00003c3f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Meteo
-      m_OriginalName: Meteo
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 16172
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 11}
     m_SearchString: 
@@ -817,7 +817,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000083f00000a3f00000c3f00000e3f0000103f0000123f0000143f0000
+    m_ExpandedIDs: 00000000323f0000343f0000363f0000383f00003a3f00003c3f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -842,8 +842,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 62f2feff
-    m_LastClickedInstanceID: -69022
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000964800003e420000b43c0000403d0000443d0000423d00003e3d0000463d0000ae46000098490000b8410000dc1d01006c2901005c9100008a3e000062f2feff
     m_RenameOverlay:

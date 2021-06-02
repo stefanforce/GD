@@ -1,0 +1,33 @@
+[
+{"name": "objectiveB_16",
+ "Green":2,
+ "Yellow":0,
+  "Red": 0,
+  "type": 2,
+  "score":  3
+ },
+  {
+    "name": "objectiveB_17",
+    "Green": 0,
+    "Yellow": 2,
+    "Red": 0,
+    "type": 2,
+    "score": 4
+  },
+  {
+    "name": "objectiveB_18",
+    "Green": 0,
+    "Yellow": 0,
+    "Red": 2,
+    "type": 2,
+    "score": 5
+  },
+  {
+    "name": "objectiveB_19",
+    "Green": 1,
+    "Yellow": 1,
+    "Red": 1,
+    "type": 2,
+    "score": 6
+  }
+]
